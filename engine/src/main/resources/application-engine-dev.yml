@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/zk_net?useSSL=false&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false
-    username: root
-    password: zknet@mysql
+    username: zk_net
+    password: zknet@123
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initial-size: 5
