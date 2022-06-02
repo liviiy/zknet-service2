@@ -38,8 +38,6 @@ jobs:
           source: "./gateway/target/zknet-gateway-dev.jar"
           target: "/application/zknet/gateway"
           strip_components: 2
-          script: |
-            mv /application/zknet/gateway/target/zknet-gateway-dev.jar /application/zknet/gateway/
       - name: start gateway
         uses: cross-the-world/ssh-pipeline@master
         env:
@@ -51,6 +49,7 @@ jobs:
           port: 22
           connect_timeout: 20s
           script: |
+            mv /application/zknet/gateway/target/zknet-gateway-dev.jar /application/zknet/gateway/
             cd /application/zknet/
             docker-compose restart zknet_gateway
 #            cd /root/zknet-service/gateway/target/
