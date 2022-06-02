@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.MY_ALIYUN_USER }}
           password: ${{ secrets.MY_ALIYUN_PASSWD }}
           port: 22
-          source: "./gateway/target/zknet-dev.jar"
+          source: "./gateway/target/zknet-gateway-dev.jar"
           target: "/application/zknet/gateway"
           strip_components: 2
       - name: start gateway
