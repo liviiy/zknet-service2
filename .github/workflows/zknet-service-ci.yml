@@ -35,8 +35,8 @@ jobs:
           username: ${{ secrets.MY_ALIYUN_USER }}
           password: ${{ secrets.MY_ALIYUN_PASSWD }}
           port: 22
-          source: "./gateway/target/zknet-gateway-dev.jar"
-          target: "/application/zknet/gateway"
+          source: "./gateway/target/zknet-gateway-dev.jar,./message/target/zknet-message-dev.jar"
+          target: "/application/zknet/"
           strip_components: 2
       - name: start gateway
         uses: cross-the-world/ssh-pipeline@master
@@ -49,9 +49,11 @@ jobs:
           port: 22
           connect_timeout: 20s
           script: |
-            mv /application/zknet/gateway/target/zknet-gateway-dev.jar /application/zknet/gateway/
+            mv /application/zknet/target/zknet-gateway-dev.jar /application/zknet/gateway/
+            mv /application/zknet/target/zknet-message-dev.jar /application/zknet/message/
             cd /application/zknet/
             docker-compose restart zknet_gateway
+            docker-compose restart zknet_message
 #            cd /root/zknet-service/gateway/target/
 #            i=`ps -ef|grep "zknet-gateway-dev"|grep java|grep -v grep|awk '{print $2}'`
 #            while [ x$i != x ]; do
