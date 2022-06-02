@@ -26,11 +26,11 @@ spring:
         min-idle: 0
 web3:
   zksync2:
-    url: http://172.18.58.71:3050
+    url: http://121.89.245.161:3050
     adminKey: '0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110'
     chainId: 270
   eth:
-    url: http://172.18.58.71:8545
+    url: http://121.89.245.161:8545
     adminKey: '0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110'
     chainId: 1
 mybatis:
