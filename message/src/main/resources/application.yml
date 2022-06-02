@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: zknet-message
+  profiles:
+    active: @env@
+    include: engine-@env@
+
+logging:
+  config: classpath:log4j2-test.xml
+server:
+  port: 8099

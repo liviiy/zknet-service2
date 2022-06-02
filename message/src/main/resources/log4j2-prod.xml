@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <Properties>
+        <Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss} ${hostName}  [%t] [ %-5p ] %c{1.}:%L - %m%n</Property>
+        <Property name="rollingPattern">_%d{yyyyMMdd}</Property>
+        <Property name="logDir">/logs/message</Property>
+        <!--<Property name="logFileMaxSize">500 MB</Property>-->
+        <Property name="retainDuration">30d</Property>
+        <Property name="projName">message</Property>
+    </Properties>
+    <appenders>
+        <console name="consoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logPattern}"/>
+        </console>
+        <RollingFile name="allAppender" fileName="${logDir}/${projName}_all.log"
+                     filePattern="${logDir}/${projName}_all${rollingPattern}.log.gz">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!--<SizeBasedTriggeringPolicy size="${logFileMaxSize}"/>-->
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logDir}">
+                    <IfFileName glob="${projName}_all*.log.gz">
+                        <IfLastModified age="${retainDuration}"/>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="debugAppender" fileName="${logDir}/${projName}_debug.log"
+                     filePattern="${logDir}/${projName}_debug${rollingPattern}.log.gz">
+            <PatternLayout pattern="${logPattern}"/>
+            <Filters>
+                <!-- INFO以及以上DENY，以下进入下一个Filter -->
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!-- DEBUG以上打印日志 -->
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"  modulate="true"/>
+                <!--<SizeBasedTriggeringPolicy size="${logFileMaxSize}"/>-->
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logDir}">
+                    <IfFileName glob="${projName}_debug*.log.gz">
+                        <IfLastModified age="${retainDuration}"/>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="infoAppender" fileName="${logDir}/${projName}_info.log"
+                     filePattern="${logDir}/${projName}_info${rollingPattern}.log.gz">
+            <PatternLayout pattern="${logPattern}"/>
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"  modulate="true"/>
+                <!--<SizeBasedTriggeringPolicy size="${logFileMaxSize}"/>-->
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logDir}">
+                    <IfFileName glob="${projName}_info*.log.gz">
+                        <IfLastModified age="${retainDuration}"/>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="errorAppender" fileName="${logDir}/${projName}_error.log"
+                     filePattern="${logDir}/${projName}_error${rollingPattern}.log.gz">
+            <PatternLayout pattern="${logPattern}"/>
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"  modulate="true"/>
+                <!--<SizeBasedTriggeringPolicy size="${logFileMaxSize}"/>-->
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logDir}">
+                    <IfFileName glob="${projName}_error*.log.gz">
+                        <IfLastModified age="${retainDuration}"/>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <root level="DEBUG">
+            <appender-ref ref="consoleAppender"/>
+            <appender-ref ref="allAppender"/>
+            <appender-ref ref="debugAppender"/>
+            <appender-ref ref="infoAppender"/>
+            <appender-ref ref="errorAppender"/>
+        </root>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="org.springframework.remoting.support.RemoteInvocationTraceInterceptor" level="ERROR"/>
+        <!--        <logger name="org.hibernate" level="INFO"/>-->
+        <!--        <logger name="springfox" level="INFO"/>-->
+        <!--        <logger name="org.apache.dubbo" level="INFO"/>-->
+        <logger name="io.netty" level="INFO"/>
+        <logger name="io.lettuce" level="INFO"/>
+    </loggers>
+</configuration>

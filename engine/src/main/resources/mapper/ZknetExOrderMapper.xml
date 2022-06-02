@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zknet.engine.mapper.ZknetExOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.zknet.engine.entity.ZknetExOrder" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="ex_no" property="exNo" jdbcType="VARCHAR" />
+    <result column="user_addr" property="userAddr" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="INTEGER" />
+    <result column="timestamp" property="timestamp" jdbcType="INTEGER" />
+    <result column="position_token" property="positionToken" jdbcType="VARCHAR" />
+    <result column="position_amount" property="positionAmount" jdbcType="VARCHAR" />
+    <result column="fee" property="fee" jdbcType="VARCHAR" />
+    <result column="extend" property="extend" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sign" property="sign" jdbcType="LONGVARCHAR" />
+  </resultMap>
+</mapper>

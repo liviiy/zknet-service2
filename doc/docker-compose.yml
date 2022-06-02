@@ -1,0 +1,64 @@
+version: "2"
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/gateway.conf:/etc/nginx/conf.d/gateway.conf:ro
+      - ./logs/nginx/:/var/log/nginx/:rw
+    restart: unless-stopped
+    privileged: true
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=zknet@mysql"
+      - "MYSQL_ROOT_HOST=%"
+      - "MYSQL_DATABASE=zk_net"
+      - "TZ=Asia/Shanghai"
+    volumes:
+      - ./mysql/data/:/var/lib/mysql:rw
+      - ./mysql/config/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf:ro
+    hostname: mysql
+    container_name: mysql
+    restart: always
+  redis:
+    image: redis
+    container_name: redis
+    hostname: redis
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --port 6379 --requirepass 'zknet@redis'
+  zknet_gateway:
+    image: daocloud.io/library/java:openjdk-8-jre-alpine
+    container_name: zknet_gateway
+    restart: always
+    environment:
+      - "TZ=Asia/Shanghai"
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./gateway:/data/:rw
+    working_dir: /data
+    entrypoint: java -jar /data/zknet-gateway-dev.jar --spring.profiles.active=dev
+    #entrypoint: java -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=12003 /data/pro-server-1.0.0.jar
+    privileged: true
+  zknet_message:
+    image: daocloud.io/library/java:openjdk-8-jre-alpine
+    container_name: zknet_message
+    restart: always
+    environment:
+      - "TZ=Asia/Shanghai"
+    ports:
+      - "8099:8099"
+    volumes:
+      - ./message:/data/:rw
+    working_dir: /data
+    entrypoint: java -jar /data/zknet-message-dev.jar --spring.profiles.active=dev
+    #entrypoint: java -jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=12003 /data/pro-server-1.0.0.jar
+    privileged: true
+

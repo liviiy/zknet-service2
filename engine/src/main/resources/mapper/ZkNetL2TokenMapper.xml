@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zknet.engine.mapper.ZkNetL2TokenMapper">
+    <resultMap id="BaseresultMap" type="com.zknet.engine.entity.ZkNetL2Token">
+        <id column="id" property="id" jdbcType="BIGINT"></id>
+        <result column="name" property="name" jdbcType="VARCHAR"></result>
+        <result column="full_name" property="fullName" jdbcType="VARCHAR"></result>
+        <result column="contract_address" property="contractAddress" jdbcType="VARCHAR"></result>
+        <result column="type" property="type" jdbcType="VARCHAR"></result>
+        <result column="decimal" property="decimal" jdbcType="INTEGER"></result>
+        <result column="token_id" property="tokenId" jdbcType="BIGINT"></result>
+    </resultMap>
+    <sql id="BaseColumn">id,name,full_name,contract_address,type,`decimal`</sql>
+    <sql id="InsertBaseColumn">name,full_name,contract_address,type,`decimal`</sql>
+
+    <insert id="addL2Token" parameterType="com.zknet.engine.entity.ZkNetL2Token" useGeneratedKeys="true" keyProperty="id">
+        insert into zknet_l2_token (<include refid="InsertBaseColumn"></include>)
+        values (#{name},#{fullName},#{contractAddress},#{type},#{decimal})
+    </insert>
+
+    <update id="updateL2Token" parameterType="com.zknet.engine.entity.ZkNetL2Token" useGeneratedKeys="true" keyProperty="id">
+        update zknet_l2_token
+        <set>
+            <if test="name!=null and name!='' ">name = #{name},</if>
+            <if test="fullName!=null and fullName!='' ">full_name=#{fullName}</if>
+            <if test="contractAddress!=null and contractAddress!='' ">contract_address=#{contractAddress}</if>
+            <if test="type!=null and type!='' ">type=#{type}</if>
+            <if test="decimal!=null ">decimal=#{decimal}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" resultMap="BaseresultMap">
+        select <include refid="BaseColumn"></include>
+        from zknet_l2_token where id = #{id}
+    </select>
+
+    <select id="getByConditionIf" parameterType="com.zknet.engine.entity.ZkNetL2Token" resultMap="BaseresultMap" >
+        select <include refid="BaseColumn"></include>
+        from zknet_l2_token
+        <where>
+            <if test="id!=null and id!='' "> id = #{id}</if>
+            <if test="name!=null and name!='' ">
+                <bind name="name" value=" '%' + name + '%' "/>
+                and name like #{name}
+            </if>
+            <if test="fullName!=null and fullName!='' ">
+                <!--bind绑定变量，不为空的时候才去绑定-->
+                <bind name="fullName" value=" '%'+fullName+'%' "/>
+                and full_name like #{fullName};
+            </if>
+        </where>
+    </select>
+
+</mapper>

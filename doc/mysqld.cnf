@@ -1,0 +1,33 @@
+[client]
+default-character-set=utf8
+[mysql]
+no-auto-rehash
+default-character-set=utf8
+
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+log-error       = /var/run/mysqld/mysqld.err
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+secure-file-priv= NULL
+server_id=1
+symbolic-links=0
+character-set-server=utf8
+default_authentication_plugin=mysql_native_password
+#设置日志格式
+binlog_format = mixed
+#设置日志路径，注意路经需要mysql用户有权限写
+log-bin = /var/lib/mysql/mysql-bin
+##设置binlog清理时间
+expire_logs_days = 7
+##binlog每个日志文件大小
+max_binlog_size = 100m
+##binlog缓存大小
+binlog_cache_size = 4m
+##最大binlog缓存大小
+max_binlog_cache_size = 512m
+lower_case_table_names=1
+max_connections = 1000
+wait_timeout=31536000
+interactive_timeout=31536000
+sql_mode = STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER
